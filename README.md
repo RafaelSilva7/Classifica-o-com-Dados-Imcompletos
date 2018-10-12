@@ -1,4 +1,4 @@
-# Classifica-o-com-Dados-Imcompletos
+# Classifição com Dados Imcompletos
 Uma abordagem eficaz e eficiente para classificação com dados imcompletos
 
 ## Baseado em
