@@ -90,6 +90,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# Minha maquina virtual - Rafael
+env-pbd/
+
 # Spyder project settings
 .spyderproject
 .spyproject
