@@ -7,14 +7,14 @@ Uma abordagem eficaz e eficiente para classificação com dados imcompletos
 
 ## Desenvolvido com
 
-[Python3](https://docs.python.org/3/) - A linguagem usada
+* [Python3](https://docs.python.org/3/) - A linguagem usada
 
 ## Autores
 
-[Cassia Gabriela](http://github.com/) (cassiagabrielasp@gmail.com)
-[Denilson Santos Junior](http://github.com/) (denilsonssj@uft.edu.br)
-[Rafael da Costa Silva](https://github.com/RafaelSilva7) (rafaelcs@uft.edu.br)
-[Victor Hugo](http://github.com/) (victorsssaraiva@gmail.com) 
+* [Cassia Gabriela](http://github.com/) (cassiagabrielasp@gmail.com)
+* [Denilson Santos Junior](http://github.com/) (denilsonssj@uft.edu.br)
+* [Rafael da Costa Silva](https://github.com/RafaelSilva7) (rafaelcs@uft.edu.br)
+* [Victor Hugo](http://github.com/) (victorsssaraiva@gmail.com) 
 
 ## License
 
@@ -22,4 +22,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 ## Orientador
 
-[Edeilson Milhomem da Silva](http://github.com/) (edeilson.milhomen@uft.edu.br)
+* [Edeilson Milhomem da Silva](http://github.com/) (edeilson.milhomen@uft.edu.br)
