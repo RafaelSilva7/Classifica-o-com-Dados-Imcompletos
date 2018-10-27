@@ -1,9 +1,12 @@
 import dataset
-import missing_patterns
+from missingPatterns import MissingPatterns
 
 if __name__ == "__main__":
     # execute only if run as a script
     d = dataset.Dataset()
-    mp = missing_patterns.MissingPatterns(d).mp
+    mp = MissingPatterns(d).missing_patterns
+
+    for i in mp:
+    	print(set(i))
 
     

@@ -105,3 +105,6 @@ env-pbd/
 
 # mypy
 .mypy_cache/
+
+# Arquivo de testes
+test.py

@@ -1,20 +1,17 @@
 import re
 
 class Dataset():
-	name = None
-	data = []
-	data_class = []
-	n_instances = None
-	n_features = None
-	n_class = None
-	n_integer = None
-	n_real = None
-	n_nominal = None
 
-
-	"""Classe para a manipulação do Dataset"""
-	def __init__(self, name="hepatitis"):
+	def __init__(self, name='hepatitis'):
 		self.name = name
+		self.data = []
+		self.data_class = []
+		self.n_instances = None
+		self.n_features = None
+		self.n_class = None
+		#self.n_integer = None
+		#self.n_real = None
+		#self.n_nominal = None
 		self.instance_data()
 
 	"""Instancia a base de dados"""
@@ -26,6 +23,7 @@ class Dataset():
 				self.data_class.append(lis[0])
 				self.data.append(lis[1::])
 			f.close()
+
 			self.n_instances = len(self.data_class)
 			self.n_features = len(self.data[0])
 			self.n_class = len(set(self.data_class))
