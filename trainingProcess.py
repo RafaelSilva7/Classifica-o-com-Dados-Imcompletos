@@ -1,7 +1,10 @@
 from imputation import Imputation
 from featureSelection import FeatureSelection
 from missingPatterns import MissingPatterns
-
+from weka.classifiers import Classifier, Evaluation
+from weka.core.classes import Random
+from weka.core.dataset import Instances
+from myClassifier import MyClassifier
 
 class Training():
 	"""
@@ -10,49 +13,86 @@ class Training():
 	para que não seja necessário realizar a imputação dos dados no processo de aplicação
 
 	Parametros:
-	data = conjunto de dados a serem classificados
-	learn_class = algoritmo de treinamento dos classificadores
+	data -> weka.core.dataset.Instances
+	learn_class = algoritmo de treinamento dos classificadores (String)
+	options = configurações do algortimo de treinamento (List)
 	"""
-	def __init__(self, data, learn_class):
+	def __init__(self, data, learn_class="weka.classifiers.trees.J48", options=["-C", "0.3"]):
 		# Instatinciação das variaveis
-		self.data = data
-		self.learn_class = learn_class
-		self.imp_data = None
-		self.selected_feature = None
-		self.missing_patterns = None
-		self.classifiers = []
+		self.data = data # -> weka.core.dataset.Instances
+		self.learn_class = learn_class # String
+		self.options = options # List
+		self.imp = None # Imputation()
+		self.selected_features = None # ndarry
+		self.missing_patterns = None # ndarry
+		self.classifiers = set()
 		self.weights = []
 
-		# Execução do treinamento
-		self.execute()
 
-
-	def execute(self):
+	'''
+	Realiza o treinamento do conjunto de dados
+	'''
+	def training(self):
 		# Preparação dos dados
-		self.imp_data = Imputation(data)
-		self.selected_feature = FeatureSelection(imp_data)
+		self.imp = Imputation(self.data)
+
+		# Seleciona as caracteristicas
+		self.features = FeatureSelection(self.imp.imputed_data)
+		data_selected = self.features.data_selected
+		self.selected_features = self.features.selected_features
 
 		# Encontra os padrões ausentes
-		data_selected = self.data.SelectFeature(selected_feature)
-		self.missing_patterns = MissingPatterns(data_selected)
+		self.missing_patterns = MissingPatterns(self.data, self.selected_features).missing_patterns
 
 		# Realiza o treinamento dos classificadores
-		for mpi in missing_patterns:
+		#print('test train')
+		for mpi in self.missing_patterns:
+
 			# Seleciona as caracteristicas
-			classifier_pattern = selected_feature.intersection(mpi)
+			cpi = set(self.selected_features) - set(mpi)
+			data_temp = Instances.copy_instances(data_selected, from_row=0, num_rows=data_selected.num_instances)
+			data_temp.class_is_last()
 
-			# Separa o conjunto de dados para o treinamento e validação
-			imp_train = imp_data.SelectData(classifier_pattern)
-			imp_validation = imp_data.data_class()
+			# Separa os dados de treinamento
+			data_temp = self.reduceData(data_temp, cpi, self.data)
 
+			
 			# Treina os classificadores com os dados imputados
-			classifier = self.learn_class.learn()
-			self.classifiers.append(classifier)
+			classifier = Classifier(classname=self.learn_class, options=self.options)
+			classifier.build_classifier(data_temp)
+			
+			#print(classifier.distribution_for_instance(data_selected.get_instance(30)))
+			
 
-			# Verica o peso de cada classificador (sua acuracia de classificação)
-			weight = classifier.validation(imp_validation)
-			self.weights.append(weight)
+			#!!!!!! Verica o peso de cada classificador (sua acuracia de classificação)
+			evl = Evaluation(data_temp)
+			evl.crossvalidate_model(classifier, data_temp, 15, Random(1))
 
-		return (classifiers, weights, selected_feature)
+			# Adiciona os classificadores treinados ao conjunto de classificadores
+			my_classifier = MyClassifier(classifier, cpi, 1 - evl.mean_absolute_error)
+			self.classifiers.add(my_classifier)
+
+		#print(data_temp.class_attribute)
+		#print("\n---------------------------------------\n")
 
 
+	'''
+	Realiza a redução de um conjunto de instancias, segunda as caracteristicas informadas
+	data -> weka.core.dataset.Instances
+	features -> set()
+	original_data -> weka.core.dataset.Instances
+	'''
+	def reduceData(self, data, features, original_data):
+		i = 0;
+		while i < data.num_attributes:
+			flag = True
+			for j in features:
+				if str(original_data.attribute(j)) == str(data.attribute(i)):
+					flag = False
+					pass
+
+			if flag:
+				data.delete_attribute(i)
+			else:
+				i += 1
+		return data	
