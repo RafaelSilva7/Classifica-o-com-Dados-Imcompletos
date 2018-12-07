@@ -8,6 +8,7 @@ Uma abordagem eficaz e eficiente para classificação com dados imcompletos
 ## Desenvolvido com
 
 * [Python3](https://docs.python.org/3/) - A linguagem usada
+* [Python Weka Wrapper](https://github.com/fracpete/python-weka-wrapper3.git) - API Python do Weka
 
 ## Autores
 
