@@ -1,5 +1,5 @@
 # Classifição com Dados Imcompletos
-Uma abordagem eficaz e eficiente para classificação com dados imcompletos
+Uma abordagem eficaz e eficiente para classificação com dados incompletos
 
 ## Baseado em
 
